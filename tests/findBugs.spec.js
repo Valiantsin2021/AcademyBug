@@ -5,7 +5,7 @@ const unique = uuid.v1()
 const product = 'Blue Hoodie'
 const fakeUserName = '50196d90-e0f0-11ed-9606-1d6306658721@1.com'
 const fakePassword = '50196d90-e0f0-11ed-9606-1d6306658721@1.com'
-test.describe.only('Explore a practice test site that has 25 real bugs planted inside', async () => {
+test.describe('Explore a practice test site that has 25 real bugs planted inside', async () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('./')
     await page.getByRole('button', { name: '×' }).click()
