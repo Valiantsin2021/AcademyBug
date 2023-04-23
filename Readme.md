@@ -21,6 +21,7 @@
 3.  Test suite integration to GitHub Actions with automated tests run on push and report publishing to gh-pages
 4.  Precommit hook for code linting and formatting
 5.  Docker run:
+
 ```
 docker build -t playwright .
 //run without volume
