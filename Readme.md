@@ -20,7 +20,14 @@
 2.  Allure reporter with report published on GitHub pages
 3.  Test suite integration to GitHub Actions with automated tests run on push and report publishing to gh-pages
 4.  Precommit hook for code linting and formatting
-5.  Custom fixtures
+5.  Docker run:
+```
+docker build -t playwright .
+//run without volume
+docker run -it --name playwright playwright npm t
+//mount local folder as a volume
+docker run -it --name playwright --mount type=bind,source="$(pwd)",target=/app playwright npm t
+```
 
 ## Setup:
 

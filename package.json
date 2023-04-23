@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "ci": "npx playwright test --reporter=line,allure-playwright && npm run allure",
-    "test": "npx playwright test --ui",
+    "test": "npx playwright test",
+    "posttest": "npm run allure",
     "allure": "allure generate allure-results -o allure-report --clean",
     "format": "prettier --write .",
     "lint": "eslint ./**/*.js --fix"
