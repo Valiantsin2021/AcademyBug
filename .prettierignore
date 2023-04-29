@@ -3,3 +3,5 @@ report
 responses
 allure-report
 allure-results
+playwright-report
+test-results

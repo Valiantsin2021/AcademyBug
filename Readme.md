@@ -20,7 +20,7 @@
 2.  Allure reporter with report published on GitHub pages
 3.  Test suite integration to GitHub Actions with automated tests run on push and report publishing to gh-pages
 4.  Precommit hook for code linting and formatting
-5.  Docker run:
+5.  Docker run (incl java for allure report):
 
 ```
 docker build -t playwright .
