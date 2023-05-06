@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npm install -D npm-check-updates && npx npm-check-updates -u",
     "ci": "npx playwright test --reporter=line,allure-playwright && npm run allure",
     "test": "npx playwright test",
     "posttest": "npm run allure",
