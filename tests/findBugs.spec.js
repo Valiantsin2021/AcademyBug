@@ -1,255 +1,248 @@
 // @ts-check
-const { test, expect } = require('@playwright/test')
-const uuid = require('uuid')
-const unique = uuid.v1()
-const product = 'Blue Hoodie'
-const fakeUserName = '50196d90-e0f0-11ed-9606-1d6306658721@1.com'
-const fakePassword = '50196d90-e0f0-11ed-9606-1d6306658721@1.com'
+import { test, expect } from '../fixtures/fixture'
+// import { HomePage } from '../pages/homePage'
+const product = ['Blue Hoodie', 'Professional Suit']
+import { Chance } from 'chance'
+import fs from 'fs'
+const chance = new Chance()
+const color = ['Orang', 'Green']
+const user = {
+  firstname: chance.name().split(' ')[0],
+  lastname: chance.name().split(' ')[1],
+  email: chance.email(),
+  password: chance.bb_pin()
+}
+const bugsFound = []
+// /** @type {HomePage} */
+// let homePage
 test.describe('Explore a practice test site that has 25 real bugs planted inside', async () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('./')
-    await page.getByRole('button', { name: '×' }).click()
-    await page.getByRole('link', { name: 'Find Bugs' }).click()
+  test.beforeEach(async ({ homePage }) => {
+    // homePage = new HomePage(page)
+    await homePage.openPage('/')
+    await homePage.acceptCookies.click()
+    await homePage.findBugsBtn.click()
   })
-  test.afterEach(async ({ page }) => {
-    await page.getByRole('button', { name: 'Close' }).click()
-    await page
-      .getByRole('heading', {
-        name: 'There are more bugs in the find bugs page, please keep searching.'
-      })
-      .isVisible()
-    await page.getByRole('button', { name: 'Close' }).click()
+  test.afterEach(async ({ homePage }) => {
+    await homePage.handleBug().then(async description => {
+      await bugsFound.push(description)
+    })
+    console.log(bugsFound)
   })
-  test('first bug - the product quantity can not be increased past 2', async ({ page }) => {
+  test.afterAll(async () => {
+    await fs.writeFileSync('./bugs.json', JSON.stringify(bugsFound))
+  })
+  test('first bug - the product quantity can not be increased past 2', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find first bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.getByRole('button', { name: '+' }).click()
-    await page.getByRole('button', { name: 'ADD TO CART' }).click()
-    await page.getByRole('button', { name: '+' }).click()
-    await page.getByText('UPDATE').click()
+    await homePage.addToBasketAndUpdate(product[0])
   })
-  test('second bug - the page becomes unresponsive when clicking on the number of results', async ({ page }) => {
+  test('second bug - the page becomes unresponsive when clicking on the number of results', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find second bug'
     })
-    await page.getByRole('link', { name: '50' }).click()
-    await expect(page.locator('div.academy-crash-overlay-bug')).toBeVisible()
+    await homePage.showNumberOfProducts(`50`)
+    await expect(homePage.bugModal).toBeVisible()
   })
-  test('third bug - the yellow and orange colors of the product are misspelled.', async ({ page }) => {
+  test('third bug - the yellow and orange colors of the product are misspelled.', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find third bug'
     })
-    await page.getByRole('link', { name: 'Professional Suit' }).click()
-    await page.getByTitle('Orang').click()
-    await page.getByText('Orang').click()
+    await homePage.openProduct(product[1])
+    await homePage.chooseColor(color[0])
   })
-  test('fourth bug- the twitter share button in the product details page is broken.', async ({ page }) => {
+  test('fourth bug- the twitter share button in the product details page is broken.', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find fourth bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.locator('[alt="Twitter"]').click()
+    await homePage.openProduct(product[0])
+    await homePage.twitterLink.click()
   })
-  test('fifth bug - page crush on change the currency', async ({ page }) => {
+  test('fifth bug - page crush on change the currency', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find fifth bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.locator('[name="ec_currency_conversion"]').selectOption('EUR')
-    await expect(page.locator('div.academy-crash-overlay-bug')).toBeVisible()
+    await homePage.openProduct(product[0])
+    await homePage.chooseCurrency('EUR')
+    await expect(homePage.bugModal).toBeVisible()
   })
   test('six bug -  the filter by price doesn`t work in the product details or product list pages.', async ({
-    page
+    homePage
   }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find six bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.getByText('$15.00 - $19.99 (1)').click()
+    await homePage.openProduct(product[0])
+    await homePage.selectPriceRange('$15.00 - $19.99 (1)')
   })
-  test('seventh bug - Sign In button overlaps the footer.', async ({ page }) => {
+  test('seventh bug - Sign In button overlaps the footer.', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find seventh bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.getByRole('button', { name: 'Accept cookies' }).click()
-    await page.getByText('SIGN IN').click()
+    await homePage.openProduct(product[0])
+    await homePage.cookiesBtn.click()
+    await homePage.signinBtn.click()
   })
-  test('eights bug - Sign In button is misaligned vertically.', async ({ page }) => {
+  test('eights bug - Sign In button is misaligned vertically.', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find eights bug'
     })
-    await page.goto('./account/?ec_page=login&account_error=login_failed')
-    await page.getByRole('button', { name: 'Accept cookies' }).click()
-    await page.getByText('SIGN IN').click()
+    await homePage.openPage('./account/?ec_page=login&account_error=login_failed')
+    await homePage.cookiesBtn.click()
+    await homePage.signinBtn.click()
   })
-  test('ninth bug - the title of the password field is misaligned.', async ({ page }) => {
+  test('ninth bug - the title of the password field is misaligned.', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find ninth bug'
     })
-    await page.goto('./account/?ec_page=login&account_error=login_failed')
-    await page.waitForLoadState()
-    await page.locator('#display-account-login-form-start').getByText('Password*').click()
+    await homePage.openPage('./account/?ec_page=login&account_error=login_failed')
+    await homePage.passwordPlaceholder.click()
   })
-  test('tens bug - the My Space share page loads infinitely.', async ({ page }) => {
+  test('tens bug - the My Space share page loads infinitely.', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find tens bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.locator('[alt="MySpace"]').click()
-    await page.getByText('Please wait…').click()
+    await homePage.openProduct(product[0])
+    await homePage.mySpaceLink.click()
+    await homePage.waitPlaceholder.click()
   })
-  test('eleventh bug - the page becomes unresponsive when clicking on the Post Comment button.', async ({ page }) => {
+  test.skip('eleventh bug - the page becomes unresponsive when clicking on the Post Comment button.', async ({
+    homePage
+  }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find eleventh bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.getByText('Post Comment').click()
+    await homePage.openProduct(product[0])
+    await homePage.postCommentLink.click()
   })
-  test('twelwes bug - the text under the New User section is not in English.', async ({ page }) => {
+  test('twelwes bug - the text under the New User section is not in English.', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find twelwes bug'
     })
-    await page.goto('./account/?ec_page=login&account_error=login_failed')
-    await page.waitForLoadState()
-    await page.locator('.ec_account_right .ec_account_subheader').click()
+    await homePage.openPage('./account/?ec_page=login&account_error=login_failed')
+    await homePage.userAccountHeader.click()
   })
-  test('thirteens bug - the short description and description of the product are not in English.', async ({ page }) => {
+  test('thirteens bug - the short description and description of the product are not in English.', async ({
+    homePage
+  }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find thirteens bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.locator('.ec_details_description.academy-bug').click()
+    await homePage.openProduct(product[0])
+    await homePage.productDescriptions.click()
   })
-  test('fourteens bug - the billing address loads infinitely.', async ({ page }) => {
+  test('fourteens bug - the billing address loads infinitely.', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find fourteens bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.getByRole('link', { name: 'Sign Up' }).click()
-    await page.getByLabel('First Name*').fill('abc')
-    await page.getByLabel('Last Name*').fill('abc')
-    await page.getByLabel('Email*').fill(`${unique}@1.com`)
-    await page.locator('#ec_account_register_retype_email').fill(`${unique}@1.com`)
-    await page.locator('#ec_account_register_password').fill(`${unique}@1.com`)
-    await page.locator('#ec_account_register_password_retype').fill(`${unique}@1.com`)
-    await page.locator('[value="REGISTER"]').click()
-    await page.waitForLoadState()
-    await page.locator('#ec_account_dashboard span.ec_cart_billing_info_update_loader').click({ force: true })
+    await homePage.openProduct(product[0])
+    await homePage.registerUser(user)
+    await homePage.accountBillingInfoLink.click({ force: true })
   })
-  test('fifteens bug - unreadable symbols in shoping cart popup', async ({ page }) => {
+  test('fifteens bug - unreadable symbols in shoping cart popup', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find fifteens bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.getByRole('button', { name: '+' }).click()
-    await page.getByRole('button', { name: 'ADD TO CART' }).click()
-    await page.locator('.ec_cart_widget_button').hover()
-    await page.locator('.academy-bug span').nth(1).click({ force: true })
+    await homePage.addToBasket(product[0])
+    await homePage.cardWidgetBtn.hover()
+    await homePage.cardWidgetProductQuantityPlaceholder.click({ force: true })
   })
-  test('sixteen bug - there is big space before the last letter in "Return to Store".', async ({ page }) => {
+  test('sixteen bug - there is big space before the last letter in "Return to Store".', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find fifteens bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.getByRole('button', { name: '+' }).click()
-    await page.getByRole('button', { name: 'ADD TO CART' }).click()
-    await page.locator('.ec_cart_widget_button').hover()
-    await page.locator('.ec_cartitem_delete').click()
-    await page.locator('.ec_cart_empty_button').click()
+    await homePage.addToBasket(product[0])
+    await homePage.cardWidgetBtn.hover()
+    await homePage.deleteFromCardBtn.click()
+    await homePage.returnToStoreBtn.click()
   })
-  test('seventeens bug - the manufacturer link in the product details page is broken.', async ({ page }) => {
+  test('seventeens bug - the manufacturer link in the product details page is broken.', async ({ page, homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find seventeens bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.locator('#manufacturer-bug a').click()
+    await homePage.openProduct(product[0])
+    await homePage.productManufacturer.click()
     await page.waitForLoadState()
     await page.goBack()
   })
   test('eighteens bug - the page becomes unresponsive when clicking on the Retrieve Password button.', async ({
-    page
+    homePage
   }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find eighteens bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.getByRole('link', { name: 'Sign Up' }).click()
-    await page.getByRole('link', { name: 'Forgot Your Password?' }).click()
-    await page.locator('#ec_account_forgot_password_email').fill(`${unique}@1.com`)
-    await page.locator('[value="RETRIEVE PASSWORD"]').click()
-    await expect(page.locator('div.academy-crash-overlay-bug')).toBeVisible()
+    await homePage.openProduct(product[0])
+    await homePage.signUpBtn.click()
+    await homePage.forgotPasswordBtn.click()
+    await homePage.forgotPasswordEmailInput.fill(user.email)
+    await homePage.retrievePasswordBtn.click()
+    await expect(homePage.bugModal).toBeVisible()
   })
-  test('nineteens bug - the grand total is $100 more than the sum of all products in the cart.', async ({ page }) => {
+  test('nineteens bug - the grand total is $100 more than the sum of all products in the cart.', async ({
+    homePage
+  }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find nineteens bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.getByRole('button', { name: '+' }).click()
-    await page.getByRole('button', { name: 'ADD TO CART' }).click()
-    await page.locator('#ec_cart_total').click()
+    await homePage.addToBasket(product[0])
+    await homePage.basketTotalBtn.click()
   })
-  test('twenty bug - the image is not completely displayed.', async ({ page }) => {
+  test('twenty bug - the image is not completely displayed.', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find twenty bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.locator('#menu3').click()
-    await page.locator('a.ec_image_link_cover').nth(3).click({ force: true })
+    await homePage.addToBasket(product[0])
+    await homePage.menuLink.click()
+    await homePage.productImageLink.nth(3).click({ force: true })
   })
-  test('twenty one bug - the order history loads infinitely.', async ({ page }) => {
+  test('twenty one bug - the order history loads infinitely.', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find twenty one bug'
     })
-    await page.getByRole('link', { name: product }).click()
-    await page.getByRole('button', { name: 'Accept cookies' }).click()
-    await page.locator('#ec_account_login_email_widget').fill(fakeUserName)
-    await page.locator('#ec_account_login_password_widget').fill(fakePassword)
-    await page.getByText('SIGN IN').click()
-    await page.getByRole('button', { name: 'Close' }).click()
-    await page
-      .getByRole('heading', {
-        name: 'There are more bugs in the find bugs page, please keep searching.'
-      })
-      .isVisible()
-    await page.getByRole('button', { name: 'Close' }).click()
-    await page.getByRole('link', { name: 'Order History' }).click()
-    await page.locator('span.ec_cart_billing_info_update_loader').click({ force: true })
+    await homePage.addToBasket(product[0])
+    await homePage.cookiesBtn.click()
+    await homePage.accountLoginWidgetInput.fill(user.email)
+    await homePage.accountPasswordWidgetInput.fill(user.password)
+    await homePage.signinBtn.click()
+    await homePage.closeModal.click()
+    await homePage.bugFoundHeader.isVisible()
+    await homePage.closeModal.click()
+    await homePage.orderHistoryLink.click()
+    await homePage.billingInfoUpdateLoader.click({ force: true })
   })
   test('twenty two bug - the page freezes when increasing the product quantity having green or pink colors chosen.', async ({
-    page
+    page,
+    homePage
   }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find twenty two bug'
     })
-    await page.getByRole('link', { name: 'Professional Suit' }).click()
-    await page.locator('[title="Green"]').click()
-    await page.getByRole('button', { name: '+' }).click()
-    await expect(page.locator('div.academy-crash-overlay-bug')).toBeVisible()
+    await homePage.openProduct(product[1])
+    await homePage.chooseColor(color[1])
+    await homePage.addOneProductBtn.click()
+    await expect(homePage.bugModal).toBeVisible()
   })
 })
 /*

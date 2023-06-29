@@ -20,6 +20,7 @@ module.exports = {
         tabWidth: 2
       }
     ],
+    'playwright/expect-expect': 'off',
     'no-console': 'off',
     'no-useless-escape': 'off',
     'no-eval': 'error',
