@@ -1,8 +1,13 @@
-import { expect, Page } from '@playwright/test'
-
+//@ts-check
+import { expect } from '@playwright/test'
+/**
+ * @class HomePage
+ */
 export class HomePage {
+  /**
+   * @param {import('@playwright/test').Page} page
+   */
   constructor(page) {
-    /** @type {Page} */
     this.page = page
     this.acceptCookies = page.getByRole('button', { name: '×' })
     this.findBugsBtn = page.getByRole('link', { name: 'Find Bugs' })
@@ -50,6 +55,9 @@ export class HomePage {
     this.orderHistoryLink = page.getByRole('link', { name: 'Order History' })
     this.billingInfoUpdateLoader = page.locator('span.ec_cart_billing_info_update_loader')
   }
+  /**
+   * @param {object} user
+   */
   async registerUser(user) {
     this.firstNameInput.fill(user.firstname)
     this.lastNameInput.fill(user.lastname)
@@ -60,6 +68,9 @@ export class HomePage {
     this.registerBtn.click()
     await this.page.waitForLoadState()
   }
+  /**
+   * @param {number|any} number
+   */
   async showNumberOfProducts(number) {
     await this.page.getByRole('link', { name: number }).click()
   }
@@ -72,39 +83,60 @@ export class HomePage {
     await this.page.getByRole('link', { name: range }).scrollIntoViewIfNeeded()
     await this.page.getByRole('link', { name: range }).click()
   }
+  /**
+   * @param {array} product
+   */
   async openProduct(product) {
     await this.page.getByRole('link', { name: product }).click()
   }
+  /**
+   * @param {string} currency
+   */
   async chooseCurrency(currency) {
     await this.page.locator('[name="ec_currency_conversion"]').selectOption(currency)
   }
+  /**
+   * @param {string} color
+   */
   async chooseColor(color) {
     await Promise.all([
       this.page.locator(`[title="${color}"]`).click(),
       this.page.locator('.ec_details_option_label_selected').click()
     ])
   }
+  /**
+   * @param {string} link
+   */
   async openPage(link) {
     await this.page.goto(link)
     await this.page.waitForLoadState()
   }
-  async handleBug() {
+  /**
+   * @param {array} arr
+   */
+  async handleBug(arr) {
     await this.page.waitForLoadState()
     await this.closeModal.click({ force: true })
     const description = await this.page.evaluate(() =>
       document.querySelector('p.academy-popup-bug-subtitle').innerHTML.trim()
     )
+    await arr.push(description)
     await this.bugFoundHeader.isVisible()
     await this.page.waitForLoadState()
     await this.closeModal.click({ force: true })
     console.log(description)
-    return description
   }
+  /**
+   * @param {array} product
+   */
   async addToBasket(product) {
     await this.openProduct(product)
     await this.addOneProductBtn.click()
     await this.addToCard.click()
   }
+  /**
+   * @param {array} product
+   */
   async addToBasketAndUpdate(product) {
     await this.openProduct(product)
     await this.addOneProductBtn.click()

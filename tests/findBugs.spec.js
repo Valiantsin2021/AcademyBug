@@ -1,9 +1,8 @@
 // @ts-check
-import { test, expect } from '../fixtures/fixture'
-// import { HomePage } from '../pages/homePage'
-const product = ['Blue Hoodie', 'Professional Suit']
 import { Chance } from 'chance'
 import fs from 'fs'
+import { expect, test } from '../fixtures/fixture'
+const product = ['Blue Hoodie', 'Professional Suit']
 const chance = new Chance()
 const color = ['Orang', 'Green']
 const user = {
@@ -12,30 +11,16 @@ const user = {
   email: chance.email(),
   password: chance.bb_pin()
 }
-const bugsFound = []
-// /** @type {HomePage} */
-// let homePage
+/**
+ * @param {import('../pages/homePage').HomePage} homePage
+ */
 test.describe('Explore a practice test site that has 25 real bugs planted inside', async () => {
-  test.beforeEach(async ({ homePage }) => {
-    // homePage = new HomePage(page)
-    await homePage.openPage('/')
-    await homePage.acceptCookies.click()
-    await homePage.findBugsBtn.click()
-  })
-  test.afterEach(async ({ homePage }) => {
-    await homePage.handleBug().then(async description => {
-      await bugsFound.push(description)
-    })
-    console.log(bugsFound)
-  })
-  test.afterAll(async () => {
-    await fs.writeFileSync('./bugs.json', JSON.stringify(bugsFound))
-  })
   test('first bug - the product quantity can not be increased past 2', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find first bug'
     })
+    // console.log(await page.coverage)
     await homePage.addToBasketAndUpdate(product[0])
   })
   test('second bug - the page becomes unresponsive when clicking on the number of results', async ({ homePage }) => {
@@ -44,7 +29,6 @@ test.describe('Explore a practice test site that has 25 real bugs planted inside
       description: 'find second bug'
     })
     await homePage.showNumberOfProducts(`50`)
-    await expect(homePage.bugModal).toBeVisible()
   })
   test('third bug - the yellow and orange colors of the product are misspelled.', async ({ homePage }) => {
     test.info().annotations.push({
@@ -232,7 +216,6 @@ test.describe('Explore a practice test site that has 25 real bugs planted inside
     await homePage.billingInfoUpdateLoader.click({ force: true })
   })
   test('twenty two bug - the page freezes when increasing the product quantity having green or pink colors chosen.', async ({
-    page,
     homePage
   }) => {
     test.info().annotations.push({

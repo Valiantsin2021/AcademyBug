@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "checkJs": true
+  },
+  "exclude": ["node_modules", "**/node_modules/*"],
+  "include": ["@playwright/test", "node", "./pages/homePage"]
+}

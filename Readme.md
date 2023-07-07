@@ -28,6 +28,10 @@ docker build -t playwright .
 docker run -it --name playwright playwright npm t
 //mount local folder as a volume
 docker run -it --name playwright --mount type=bind,source="$(pwd)",target=/app playwright npm t
+
+// image should be the same version as version of playwright in package.json
+
+"docker run -it --rm --name playwright -v ${PWD}:/app -w /app playwright npm t"
 ```
 
 ## Setup:
