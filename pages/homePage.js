@@ -30,9 +30,9 @@ export class HomePage {
     this.userAccountHeader = page.locator('.ec_account_right .ec_account_subheader')
     this.productDescriptions = page.locator('.ec_details_description.academy-bug')
     this.signUpBtn = page.getByRole('link', { name: 'Sign Up' })
-    this.firstNameInput = page.getByLabel('First Name*')
-    this.lastNameInput = page.getByLabel('Last Name*')
-    this.emailInput = page.getByLabel('Email*')
+    this.firstNameInput = page.locator('#ec_account_register_first_name')
+    this.lastNameInput = page.locator('#ec_account_register_last_name')
+    this.emailInput = page.locator('#ec_account_register_email')
     this.repeatEmailInput = page.locator('#ec_account_register_retype_email')
     this.passwordInput = page.locator('#ec_account_register_password')
     this.repeatPasswordInput = page.locator('#ec_account_register_password_retype')
@@ -59,12 +59,12 @@ export class HomePage {
    * @param {object} user
    */
   async registerUser(user) {
-    this.firstNameInput.fill(user.firstname)
-    this.lastNameInput.fill(user.lastname)
-    this.emailInput.fill(user.email)
-    this.repeatEmailInput.fill(user.email)
-    this.passwordInput.fill(user.password)
-    this.repeatPasswordInput.fill(user.password)
+    this.firstNameInput.type(user.firstname)
+    this.lastNameInput.type(user.lastname)
+    this.emailInput.type(user.email)
+    this.repeatEmailInput.type(user.email)
+    this.passwordInput.type(user.password)
+    this.repeatPasswordInput.type(user.password)
     this.registerBtn.click()
     await this.page.waitForLoadState()
   }

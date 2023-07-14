@@ -29,6 +29,10 @@
     "eslint-plugin-prettier": "^4.2.1",
     "npm-check-updates": "^16.10.13",
     "pre-commit": "^1.2.2",
-    "prettier": "2.8.8"
+    "prettier": "2.8.8",
+    "tesseract.js": "^4.1.1"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.10"
   }
 }

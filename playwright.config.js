@@ -53,14 +53,15 @@ module.exports = defineConfig({
     actionTimeout: 40 * 1000,
     navigationTimeout: 40 * 1000,
     locale: 'en-GB',
-    headless: true,
+    headless: false,
     screenshot: 'only-on-failure', // "on"
     video: 'retain-on-failure', // "on"
     // retries: 2, // number of retry to fail test
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'https://academybugs.com/',
+    // viewport: null,
     viewport: { width: 1920, height: 1080 },
-    trace: 'on-first-retry'
+    trace: 'retain-on-failure'
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
   },

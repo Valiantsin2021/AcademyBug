@@ -1,6 +1,5 @@
 // @ts-check
 import { Chance } from 'chance'
-import fs from 'fs'
 import { expect, test } from '../fixtures/fixture'
 const product = ['Blue Hoodie', 'Professional Suit']
 const chance = new Chance()
@@ -128,12 +127,14 @@ test.describe('Explore a practice test site that has 25 real bugs planted inside
     await homePage.openProduct(product[0])
     await homePage.productDescriptions.click()
   })
-  test('fourteens bug - the billing address loads infinitely.', async ({ homePage }) => {
+  test.only('fourteens bug - the billing address loads infinitely.', async ({ homePage, page }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find fourteens bug'
     })
     await homePage.openProduct(product[0])
+    await homePage.cookiesBtn.click()
+    await homePage.signUpBtn.click()
     await homePage.registerUser(user)
     await homePage.accountBillingInfoLink.click({ force: true })
   })

@@ -5,5 +5,10 @@
     "checkJs": true
   },
   "exclude": ["node_modules", "**/node_modules/*"],
-  "include": ["@playwright/test", "node", "./pages/homePage"]
+  "include": ["@playwright/test", "node", "./pages/homePage"],
+  "paths": {
+    "@pages": ["./pages/*.js"],
+    "@fixtures": ["./fixtures/*"],
+    "@files": ["./*"],
+  }
 }
