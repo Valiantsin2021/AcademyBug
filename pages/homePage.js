@@ -1,20 +1,19 @@
 //@ts-check
 import { expect } from '@playwright/test'
+import { Wrapper } from './wrapper.js'
 /**
  * @class HomePage
  */
-export class HomePage {
+export class HomePage extends Wrapper {
   /**
    * @param {import('@playwright/test').Page} page
    */
   constructor(page) {
-    this.page = page
+    super(page)
     this.acceptCookies = page.getByRole('button', { name: '×' })
     this.findBugsBtn = page.getByRole('link', { name: 'Find Bugs' })
     this.closeModal = page.getByRole('button', { name: 'Close' })
-    this.bugFoundHeader = page.getByRole('heading', {
-      name: 'There are more bugs in the find bugs page, please keep searching.'
-    })
+    this.bugFoundHeader = page.getByText(/There are more bugs\.*/)
     this.addOneProductBtn = page.getByRole('button', { name: '+' })
     this.deleteOneProductBtn = page.getByRole('button', { name: '-' })
     this.addToCard = page.getByRole('button', { name: 'ADD TO CART' })
@@ -25,7 +24,7 @@ export class HomePage {
     this.signinBtn = page.getByRole('button', { name: 'SIGN IN' })
     this.passwordPlaceholder = page.locator('#display-account-login-form-start').getByText('Password*')
     this.mySpaceLink = page.locator('[alt="MySpace"]')
-    this.waitPlaceholder = page.getByText('Please wait…')
+    this.waitPlaceholder = page.locator('.academy-bug-20')
     this.postCommentLink = page.getByText('Post Comment')
     this.userAccountHeader = page.locator('.ec_account_right .ec_account_subheader')
     this.productDescriptions = page.locator('.ec_details_description.academy-bug')
@@ -116,15 +115,21 @@ export class HomePage {
    */
   async handleBug(arr) {
     await this.page.waitForLoadState()
+    await expect(this.closeModal).toBeVisible()
     await this.closeModal.click({ force: true })
     const description = await this.page.evaluate(() =>
-      document.querySelector('p.academy-popup-bug-subtitle').innerHTML.trim()
+      document?.querySelector('p.academy-popup-bug-subtitle')?.innerHTML.trim()
     )
     await arr.push(description)
-    await this.bugFoundHeader.isVisible()
-    await this.page.waitForLoadState()
-    await this.closeModal.click({ force: true })
-    console.log(description)
+    try {
+      await expect(this.bugFoundHeader).toBeInViewport()
+      await this.page.waitForLoadState()
+      await this.closeModal.click({ force: true })
+      console.log(description)
+    } catch (e) {
+      console.log('second bug modal has not been displayed')
+      console.log(e)
+    }
   }
   /**
    * @param {array} product

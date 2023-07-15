@@ -10,7 +10,7 @@ import { defineConfig, devices } from '@playwright/test'
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-module.exports = defineConfig({
+export default defineConfig({
   // webServer: {
   //   command: 'npm run start',
   //   url: 'http://localhost:3000/',
@@ -43,7 +43,7 @@ module.exports = defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 1,
+  retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: 4,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -53,14 +53,15 @@ module.exports = defineConfig({
     actionTimeout: 40 * 1000,
     navigationTimeout: 40 * 1000,
     locale: 'en-GB',
-    headless: false,
+    headless: true,
     screenshot: 'only-on-failure', // "on"
     video: 'retain-on-failure', // "on"
     // retries: 2, // number of retry to fail test
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'https://academybugs.com/',
     // viewport: null,
-    viewport: { width: 1920, height: 1080 },
+    viewport: process.env.CI ? { width: 1920, height: 1080 } : null,
+    // launchOptions: { args: ['--start-maximized'] },
     trace: 'retain-on-failure'
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
@@ -71,7 +72,10 @@ module.exports = defineConfig({
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome']
+        channel: 'chrome',
+        launchOptions: {
+          args: ['--start-maximized'] // starting the browser in full screen
+        }
       }
     }
 

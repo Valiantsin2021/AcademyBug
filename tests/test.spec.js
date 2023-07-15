@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test } from '@playwright/test'
 import fs from 'fs'
 import Tesseract from 'tesseract.js'
 test(`google local storage`, async ({ page }) => {

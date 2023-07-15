@@ -9,7 +9,7 @@ export const test = myTest.extend({
     /**
      * @param {import('../pages/homePage').HomePage} homePage
      */
-    // Set up the fixture.
+    // Set up the fixture
     const homePage = new HomePage(page)
     // log all uncaught exceptions
     page.on('pageerror', exception => {
