@@ -6,10 +6,10 @@
   "scripts": {
     "preinstall": "npm install -D npm-check-updates && npx npm-check-updates -u",
     "ci": "npx playwright test --reporter=line,allure-playwright && npm run allure",
-    "performance": "npx lighthouse --chrome-flags=\"--headless\" https://academybugs.com/ --budget-path=budget.json --output html,csv --output-path=./lighthouse-results.html --preset=desktop --only-categories=performance --max-wait-for-load=6000 --skip-audits --no-enable-error-reporting",
-    "pretest": "node ./clean.js",
+    "performance": "npx lighthouse --chrome-flags=\"--headless\" https://academybugs.com/ --budget-path=./utils/lighthouse/budget.json --output html,csv --output-path=./lighthouse-report/lighthouse-results.html --preset=desktop --only-categories=performance --max-wait-for-load=6000 --skip-audits --no-enable-error-reporting",
+    "pretest": "node ./utils/clean.js",
     "test": "npx playwright test && npm run performance",
-    "posttest": "npm run allure",
+    "posttest": "npm run allure && node ./utils/zip.js",
     "allure": "allure generate allure-results -o allure-report --clean",
     "format": "prettier --write ./tests/*.js",
     "lint": "eslint ./tests/*.js --fix"
@@ -20,17 +20,18 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "1.35.1",
-    "allure-commandline": "^2.22.4",
+    "allure-commandline": "2.23.0",
     "allure-playwright": "^2.4.0",
     "chance": "^1.1.11",
-    "eslint": "^8.43.0",
+    "dotenv": "^16.3.1",
+    "eslint": "8.45.0",
     "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-playwright": "^0.15.1",
-    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-playwright": "0.15.3",
+    "eslint-plugin-prettier": "5.0.0",
     "lighthouse": "^10.4.0",
     "npm-check-updates": "^16.10.13",
     "pre-commit": "^1.2.2",
-    "prettier": "2.8.8",
+    "prettier": "3.0.0",
     "tesseract.js": "^4.1.1"
   },
   "dependencies": {

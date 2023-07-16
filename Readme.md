@@ -21,7 +21,14 @@
 3.  Test suite integration to GitHub Actions with automated tests run on push and report publishing to gh-pages
 4.  Precommit hook for code linting and formatting
 5.  Docker run (incl java for allure report):
-
+6. lighthouse script for performance test (see package.json) - budget data is in ./utils/lighthouse, report ./lighthouse-report/
+7. OCR recognition test for playwright using tesseract.js - data and output in ./tesseract
+8. Google analitics collection blocked in fixture.js
+9. Uncaught exception interception and logging in fixture.js
+10. Local storage saving after test run in fixture.js
+11. Allure results zip added in posttest script (package.json)
+12. Try-catch for not consistent modal popup (./pages/homePage.js)
+13. Wrapper class added for finding locators inside frames and different tabs
 ```
 docker build -t playwright .
 //run without volume

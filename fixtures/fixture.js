@@ -15,15 +15,32 @@ export const test = myTest.extend({
     page.on('pageerror', exception => {
       console.log(`Uncaught exception: "${exception}"`)
     })
-    // const response = page.waitForResponse('/find-bugs/')
+
+    // block google analytics
+
+    await page.route('https://www.google-analytics.com/g/collect*', route => {
+      route.fulfill({
+        status: 204,
+        body: ''
+      })
+    })
+
+    // open home page, accept cookies and go to bugs page
+
     await homePage.openPage('/')
     await homePage.acceptCookies.click()
     await homePage.findBugsBtn.click()
-    // console.log(await response))
+
+    // use the prepared page conditioon
+
     await use(homePage)
+
     // handle the found bug
+
     await homePage.handleBug(bugsFound)
+
     //store the local storage and bugsfound array to JSON files
+
     const localStorage = await page.evaluate(() => JSON.stringify(window.localStorage))
     console.log(await localStorage)
     fs.writeFileSync('localstorage.json', localStorage)

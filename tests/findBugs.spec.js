@@ -1,4 +1,5 @@
 // @ts-check
+
 import { Chance } from 'chance'
 import { expect, test } from '../fixtures/fixture'
 const product = ['Blue Hoodie', 'Professional Suit']
@@ -127,7 +128,7 @@ test.describe('Explore a practice test site that has 25 real bugs planted inside
     await homePage.openProduct(product[0])
     await homePage.productDescriptions.click()
   })
-  test('fourteens bug - the billing address loads infinitely.', async ({ homePage, page }) => {
+  test('fourteens bug - the billing address loads infinitely.', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find fourteens bug'
@@ -157,7 +158,7 @@ test.describe('Explore a practice test site that has 25 real bugs planted inside
     await homePage.deleteFromCardBtn.click()
     await homePage.returnToStoreBtn.click()
   })
-  test.only('seventeens bug - the manufacturer link in the product details page is broken.', async ({ page, homePage }) => {
+  test('seventeens bug - the manufacturer link in the product details page is broken.', async ({ page, homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find seventeens bug'
@@ -191,14 +192,13 @@ test.describe('Explore a practice test site that has 25 real bugs planted inside
     await homePage.addToBasket(product[0])
     await homePage.basketTotalBtn.click()
   })
-  test('twenty bug - the image is not completely displayed.', async ({ homePage, page }) => {
+  test('twenty bug - the image is not completely displayed.', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
       description: 'find twenty bug'
     })
     await homePage.addToBasket(product[0])
     await homePage.menuLink.click()
-    await page.pause()
     await homePage.productImageLink.nth(3).click({ force: true })
   })
   test('twenty one bug - the order history loads infinitely.', async ({ homePage }) => {

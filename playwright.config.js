@@ -1,6 +1,5 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test'
-
+import { defineConfig } from '@playwright/test'
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -47,6 +46,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: 4,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+  globalSetup: './envs/global_setup.js',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */

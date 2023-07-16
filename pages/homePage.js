@@ -107,23 +107,24 @@ export class HomePage extends Wrapper {
    * @param {string} link
    */
   async openPage(link) {
-    await this.page.goto(link)
-    await this.page.waitForLoadState()
+    await this.page.goto(link, {
+      waitUntil: 'domcontentloaded'
+    })
   }
   /**
    * @param {array} arr
    */
   async handleBug(arr) {
-    await this.page.waitForLoadState()
     await expect(this.closeModal).toBeVisible()
     await this.closeModal.click({ force: true })
+    await this.page.waitForLoadState('domcontentloaded')
     const description = await this.page.evaluate(() =>
       document?.querySelector('p.academy-popup-bug-subtitle')?.innerHTML.trim()
     )
     await arr.push(description)
     try {
       await expect(this.bugFoundHeader).toBeInViewport()
-      await this.page.waitForLoadState()
+      await this.page.waitForLoadState('domcontentloaded')
       await this.closeModal.click({ force: true })
       console.log(description)
     } catch (e) {
