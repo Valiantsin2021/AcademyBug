@@ -38,13 +38,10 @@ export const test = myTest.extend({
     // handle the found bug
 
     await homePage.handleBug(bugsFound)
-
-    //store the local storage and bugsfound array to JSON files
-
-    const localStorage = await page.evaluate(() => JSON.stringify(window.localStorage))
+    const localStorage = await page.evaluate(() => JSON.stringify(window.localStorage, null, 2))
     console.log(await localStorage)
     fs.writeFileSync('localstorage.json', localStorage)
-    fs.writeFileSync('./bugs.json', JSON.stringify(bugsFound))
+    fs.writeFileSync('./bugs.json', JSON.stringify(bugsFound, null, 2))
   }
 })
 

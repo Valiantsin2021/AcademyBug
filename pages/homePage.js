@@ -52,18 +52,25 @@ export class HomePage extends Wrapper {
     this.accountLoginWidgetInput = page.locator('#ec_account_login_email_widget')
     this.accountPasswordWidgetInput = page.locator('#ec_account_login_password_widget')
     this.orderHistoryLink = page.getByRole('link', { name: 'Order History' })
-    this.billingInfoUpdateLoader = page.locator('span.ec_cart_billing_info_update_loader')
+    this.billingInfoUpdateLoader = page.locator('span.academy-bug-18')
   }
   /**
+   * class="ec_cart_billing_info_update_loader academy-bug-18"
    * @param {object} user
    */
   async registerUser(user) {
-    this.firstNameInput.type(user.firstname)
-    this.lastNameInput.type(user.lastname)
+    this.firstNameInput.type(user.firstName)
+    await expect(this.firstNameInput).toHaveValue(user.firstName)
+    this.lastNameInput.type(user.lastName)
+    await expect(this.lastNameInput).toHaveValue(user.lastName)
     this.emailInput.type(user.email)
+    await expect(this.emailInput).toHaveValue(user.email)
     this.repeatEmailInput.type(user.email)
+    await expect(this.repeatEmailInput).toHaveValue(user.email)
     this.passwordInput.type(user.password)
+    await expect(this.passwordInput).toHaveValue(user.password)
     this.repeatPasswordInput.type(user.password)
+    await expect(this.repeatPasswordInput).toHaveValue(user.password)
     this.registerBtn.click()
     await this.page.waitForLoadState()
   }
@@ -83,7 +90,7 @@ export class HomePage extends Wrapper {
     await this.page.getByRole('link', { name: range }).click()
   }
   /**
-   * @param {array} product
+   * @param {array | *} product
    */
   async openProduct(product) {
     await this.page.getByRole('link', { name: product }).click()

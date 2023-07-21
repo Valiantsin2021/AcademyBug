@@ -1,19 +1,17 @@
 // @ts-check
 
-import { Chance } from 'chance'
 import { expect, test } from '../fixtures/fixture'
-const product = ['Blue Hoodie', 'Professional Suit']
-const chance = new Chance()
-const color = ['Orang', 'Green']
-const user = {
-  firstname: chance.name().split(' ')[0],
-  lastname: chance.name().split(' ')[1],
-  email: chance.email(),
-  password: chance.bb_pin()
-}
+import { measureExecutionTime } from '../utils/test-orchestration/measure-execution-time.js'
+import { user, color, product } from '../utils/data-factory'
 /**
  * @param {import('../pages/homePage').HomePage} homePage
  */
+test.beforeEach(async ({}, testInfo) => {
+  testInfo.duration
+})
+test.afterEach(async ({}, testInfo) => {
+  measureExecutionTime(testInfo)
+})
 test.describe('Explore a practice test site that has 25 real bugs planted inside', async () => {
   test('first bug - the product quantity can not be increased past 2', async ({ homePage }) => {
     test.info().annotations.push({
@@ -38,14 +36,24 @@ test.describe('Explore a practice test site that has 25 real bugs planted inside
     await homePage.openProduct(product[1])
     await homePage.chooseColor(color[0])
   })
-  test('fourth bug- the twitter share button in the product details page is broken.', async ({ homePage }) => {
-    test.info().annotations.push({
-      type: 'issue',
-      description: 'find fourth bug'
-    })
-    await homePage.openProduct(product[0])
-    await homePage.twitterLink.click()
-  })
+  test.fixme(
+    'fourth bug- the twitter share button in the product details page is broken.',
+    async ({ homePage, page, context }) => {
+      test.info().annotations.push({
+        type: 'issue',
+        description: 'find fourth bug'
+      })
+      await homePage.openProduct(product[0])
+      homePage.twitterLink.click()
+      console.log(await page.title())
+      // const [newtab] = await Promise.all([
+      //   context.waitForEvent('page'), //listener
+      //   homePage.twitterLink.scrollIntoViewIfNeeded(), //event on the promise page
+      //   homePage.twitterLink.click()
+      // ])
+      // await newtab.close()
+    }
+  )
   test('fifth bug - page crush on change the currency', async ({ homePage }) => {
     test.info().annotations.push({
       type: 'issue',
@@ -128,16 +136,35 @@ test.describe('Explore a practice test site that has 25 real bugs planted inside
     await homePage.openProduct(product[0])
     await homePage.productDescriptions.click()
   })
-  test('fourteens bug - the billing address loads infinitely.', async ({ homePage }) => {
-    test.info().annotations.push({
-      type: 'issue',
-      description: 'find fourteens bug'
+  test.describe.serial('user register', () => {
+    test('fourteens bug - the billing address loads infinitely.', async ({ homePage }) => {
+      test.info().annotations.push({
+        type: 'issue',
+        description: 'find fourteens bug'
+      })
+      await homePage.openProduct(product[0])
+      await homePage.cookiesBtn.click()
+      await homePage.signUpBtn.click()
+      await homePage.registerUser(user)
+      await homePage.accountBillingInfoLink.click({ force: true })
     })
-    await homePage.openProduct(product[0])
-    await homePage.cookiesBtn.click()
-    await homePage.signUpBtn.click()
-    await homePage.registerUser(user)
-    await homePage.accountBillingInfoLink.click({ force: true })
+    test('twenty one bug - the order history loads infinitely.', async ({ homePage, page }) => {
+      test.info().annotations.push({
+        type: 'issue',
+        description: 'find twenty one bug'
+      })
+      await homePage.addToBasket(product[0])
+      await homePage.cookiesBtn.click()
+      await homePage.accountLoginWidgetInput.fill(user.email)
+      await homePage.accountPasswordWidgetInput.fill(user.password)
+      await homePage.signinBtn.click()
+      await homePage.closeModal.click()
+      await homePage.bugFoundHeader.isVisible()
+      await homePage.closeModal.click()
+      await homePage.openPage('my-cart/')
+      await homePage.orderHistoryLink.click()
+      await homePage.billingInfoUpdateLoader.click({ force: true })
+    })
   })
   test('fifteens bug - unreadable symbols in shoping cart popup', async ({ homePage }) => {
     test.info().annotations.push({
@@ -200,22 +227,6 @@ test.describe('Explore a practice test site that has 25 real bugs planted inside
     await homePage.addToBasket(product[0])
     await homePage.menuLink.click()
     await homePage.productImageLink.nth(3).click({ force: true })
-  })
-  test('twenty one bug - the order history loads infinitely.', async ({ homePage }) => {
-    test.info().annotations.push({
-      type: 'issue',
-      description: 'find twenty one bug'
-    })
-    await homePage.addToBasket(product[0])
-    await homePage.cookiesBtn.click()
-    await homePage.accountLoginWidgetInput.fill(user.email)
-    await homePage.accountPasswordWidgetInput.fill(user.password)
-    await homePage.signinBtn.click()
-    await homePage.closeModal.click()
-    await homePage.bugFoundHeader.isVisible()
-    await homePage.closeModal.click()
-    await homePage.orderHistoryLink.click()
-    await homePage.billingInfoUpdateLoader.click({ force: true })
   })
   test('twenty two bug - the page freezes when increasing the product quantity having green or pink colors chosen.', async ({
     homePage

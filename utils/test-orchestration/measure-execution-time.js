@@ -31,7 +31,7 @@ export function measureExecutionTime(testInfo) {
       // Add the new test result to the JSON array
       jsonData.push(testResult)
     }
-
+    console.log(`test lasted: ${testResult.executionTime} seconds`)
     // Write the updated JSON data to the file
     fs.writeFileSync(fileName, JSON.stringify(jsonData, null, 2))
   }

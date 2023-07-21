@@ -29,6 +29,7 @@
 11. Allure results zip added in posttest script (package.json)
 12. Try-catch for not consistent modal popup (./pages/homePage.js)
 13. Wrapper class added for finding locators inside frames and different tabs
+14. Test orchestration and measure execution time util functions added (incl for Github Actions). To record test duratioon set process.env.MEASURE_EXECUTION_TIME === 'true'
 ```
 docker build -t playwright .
 //run without volume

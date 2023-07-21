@@ -59,8 +59,8 @@ export default defineConfig({
     // retries: 2, // number of retry to fail test
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'https://academybugs.com/',
-    // viewport: null,
-    viewport: process.env.CI ? { width: 1920, height: 1080 } : null,
+    viewport: null,
+    // viewport: process.env.CI ? { width: 1920, height: 1080 } : null,
     // launchOptions: { args: ['--start-maximized'] },
     trace: 'retain-on-failure'
 

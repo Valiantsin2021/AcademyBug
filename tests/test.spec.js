@@ -4,13 +4,13 @@ import Tesseract from 'tesseract.js'
 import { ENV } from '../envs/env.js'
 import { measureExecutionTime } from '../utils/test-orchestration/measure-execution-time.js'
 console.log(ENV.BASE_URL, ENV.USERNAME, ENV.PASSWORD)
-test.beforeEach(async ({ page }, testInfo) => {
+test.beforeEach(async ({}, testInfo) => {
   testInfo.duration
 })
-test.afterEach(async ({ page }, testInfo) => {
+test.afterEach(async ({}, testInfo) => {
   measureExecutionTime(testInfo)
 })
-test.only(`google local storage`, async ({ page }, testInfo) => {
+test(`google local storage`, async ({ page }, testInfo) => {
   // console.log(testInfo.config)
   await page.goto('https://www.google.com/')
   await page.locator('[name="q"]').fill('hello')

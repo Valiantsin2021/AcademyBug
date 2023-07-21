@@ -1,0 +1,90 @@
+[
+  {
+    "test": "fourteens bug - the billing address loads infinitely.",
+    "executionTime": 17.324
+  },
+  {
+    "test": "second bug - the page becomes unresponsive when clicking on the number of results",
+    "executionTime": 6.693
+  },
+  {
+    "test": "fifth bug - page crush on change the currency",
+    "executionTime": 28.859
+  },
+  {
+    "test": "third bug - the yellow and orange colors of the product are misspelled.",
+    "executionTime": 10.589
+  },
+  {
+    "test": "first bug - the product quantity can not be increased past 2",
+    "executionTime": 14.993
+  },
+  {
+    "test": "six bug -  the filter by price doesn`t work in the product details or product list pages.",
+    "executionTime": 10.369
+  },
+  {
+    "test": "seventh bug - Sign In button overlaps the footer.",
+    "executionTime": 8.373
+  },
+  {
+    "test": "eights bug - Sign In button is misaligned vertically.",
+    "executionTime": 9.019
+  },
+  {
+    "test": "ninth bug - the title of the password field is misaligned.",
+    "executionTime": 9.524
+  },
+  {
+    "test": "twelwes bug - the text under the New User section is not in English.",
+    "executionTime": 8.178
+  },
+  {
+    "test": "thirteens bug - the short description and description of the product are not in English.",
+    "executionTime": 7.686
+  },
+  {
+    "test": "fifteens bug - unreadable symbols in shoping cart popup",
+    "executionTime": 11.441
+  },
+  {
+    "test": "sixteen bug - there is big space before the last letter in \"Return to Store\".",
+    "executionTime": 16.733
+  },
+  {
+    "test": "tens bug - the My Space share page loads infinitely.",
+    "executionTime": 48.177
+  },
+  {
+    "test": "seventeens bug - the manufacturer link in the product details page is broken.",
+    "executionTime": 18.132
+  },
+  {
+    "test": "eighteens bug - the page becomes unresponsive when clicking on the Retrieve Password button.",
+    "executionTime": 15.464
+  },
+  {
+    "test": "twenty bug - the image is not completely displayed.",
+    "executionTime": 13.125
+  },
+  {
+    "test": "nineteens bug - the grand total is $100 more than the sum of all products in the cart.",
+    "executionTime": 12.89
+  },
+  {
+    "test": "twenty two bug - the page freezes when increasing the product quantity having green or pink colors chosen.",
+    "executionTime": 9.527
+  },
+  {
+    "test": "google local storage",
+    "executionTime": 1.755
+  },
+  {
+    "test": "OCR the image and log the text",
+    "executionTime": 2.436
+  },
+  {
+    "test": "twenty one bug - the order history loads infinitely.",
+    "executionTime": 14.175
+  }
+]
