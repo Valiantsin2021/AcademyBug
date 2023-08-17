@@ -1,14 +1,16 @@
 // @ts-check
-import { test as myTest } from '@playwright/test'
+import * as base from '@playwright/test'
 import fs from 'fs'
 import { HomePage } from '../pages/homePage'
 
 let bugsFound = []
-export const test = myTest.extend({
+/**
+ * @typedef {object} HomePageTestArgs - homePage test args
+ * @property {HomePage} homePage     - homePage
+ */
+/** @type {base.Fixtures<HomePageTestArgs, {}, base.PlaywrightTestArgs, base.PlaywrightWorkerArgs>} */
+export const extension = {
   homePage: async ({ page }, use) => {
-    /**
-     * @param {import('../pages/homePage').HomePage} homePage
-     */
     // Set up the fixture
     const homePage = new HomePage(page)
     // log all uncaught exceptions
@@ -43,6 +45,6 @@ export const test = myTest.extend({
     fs.writeFileSync('localstorage.json', localStorage)
     fs.writeFileSync('./bugs.json', JSON.stringify(bugsFound, null, 2))
   }
-})
-
-export const expect = test.expect
+}
+export const test = base.test.extend(extension)
+export const expect = base.expect

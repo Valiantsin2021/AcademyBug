@@ -1,5 +1,5 @@
 //@ts-check
-import { expect } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import { Wrapper } from './wrapper.js'
 /**
  * @class HomePage
@@ -55,7 +55,8 @@ export class HomePage extends Wrapper {
     this.billingInfoUpdateLoader = page.locator('span.academy-bug-18')
   }
   /**
-   * class="ec_cart_billing_info_update_loader academy-bug-18"
+   * @property {Function}
+   * @returns void
    * @param {object} user
    */
   async registerUser(user) {
@@ -148,7 +149,7 @@ export class HomePage extends Wrapper {
     await this.addToCard.click()
   }
   /**
-   * @param {array} product
+   * @param {string[]} product
    */
   async addToBasketAndUpdate(product) {
     await this.openProduct(product)

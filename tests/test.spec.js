@@ -1,4 +1,4 @@
-import { test } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import fs from 'fs'
 import Tesseract from 'tesseract.js'
 import { ENV } from '../envs/env.js'
@@ -28,4 +28,8 @@ test(`OCR the image and log the text`, async () => {
     console.log(typeof a)
     fs.writeFileSync('./tesseract/output/teserractoutput.txt', text)
   })
+})
+test.only(`coma separated locators`, async ({ page }) => {
+  // await page.goto(`http://playwright.dev/`)
+  await expect('hello world').toMatchSnapshot()
 })

@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "module": "esnext",
+    "module": "CommonJS",
     "target": "esnext",
+    "moduleResolution": "node",
     "checkJs": true
   },
   "exclude": ["node_modules", "**/node_modules/*"],
-  "include": ["@playwright/test", "node", "./pages/homePage"],
   "paths": {
-    "@pages": ["./pages/*.js"],
-    "@fixtures": ["./fixtures/*"],
-    "@files": ["./*"],
+    "baseUrl": ".",
+    "@pages/*": ["./pages/*"],
+    "@fixtures/*": ["./fixtures/*"],
+    "@files/*": ["./utils/*"],
   }
 }

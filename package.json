@@ -12,7 +12,8 @@
     "posttest": "npm run allure && node ./utils/zip.js",
     "allure": "allure generate allure-results -o allure-report --clean",
     "format": "prettier --write ./tests/*.js",
-    "lint": "eslint ./tests/*.js --fix"
+    "lint": "eslint ./tests/*.js --fix",
+    "docs": "jsdoc -d docs -c jsdoc.config.json"
   },
   "precommit": "format",
   "keywords": [],
@@ -23,11 +24,13 @@
     "@playwright/test": "1.36.1",
     "allure-commandline": "2.23.0",
     "allure-playwright": "^2.4.0",
+    "docdash": "^2.0.1",
     "dotenv": "^16.3.1",
     "eslint": "8.45.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-playwright": "0.15.3",
     "eslint-plugin-prettier": "5.0.0",
+    "jsdoc": "^4.0.2",
     "lighthouse": "^10.4.0",
     "npm-check-updates": "^16.10.13",
     "pre-commit": "^1.2.2",

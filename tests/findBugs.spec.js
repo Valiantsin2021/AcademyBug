@@ -1,17 +1,15 @@
 // @ts-check
 
 import { expect, test } from '../fixtures/fixture'
-import { measureExecutionTime } from '../utils/test-orchestration/measure-execution-time.js'
-import { user, color, product } from '../utils/data-factory'
-/**
- * @param {import('../pages/homePage').HomePage} homePage
- */
+import { color, measureExecutionTime, product, user } from '../index'
+
 test.beforeEach(async ({}, testInfo) => {
   testInfo.duration
 })
 test.afterEach(async ({}, testInfo) => {
   measureExecutionTime(testInfo)
 })
+
 test.describe('Explore a practice test site that has 25 real bugs planted inside', async () => {
   test('first bug - the product quantity can not be increased past 2', async ({ homePage }) => {
     test.info().annotations.push({
