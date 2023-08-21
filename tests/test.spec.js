@@ -29,7 +29,8 @@ test(`OCR the image and log the text`, async () => {
     fs.writeFileSync('./tesseract/output/teserractoutput.txt', text)
   })
 })
-test.only(`coma separated locators`, async ({ page }) => {
+test.only(`coma separated locators`, async ({ page }, testInfo) => {
   // await page.goto(`http://playwright.dev/`)
-  await expect('hello world').toMatchSnapshot()
+  // await expect('hello world').toMatchSnapshot()
+  console.log(JSON.stringify(testInfo., null, 2))
 })

@@ -1,5 +1,5 @@
 //@ts-check
-import { test, expect } from '@playwright/test'
+import { expect } from '@playwright/test'
 import { Wrapper } from './wrapper.js'
 /**
  * @class HomePage
@@ -141,7 +141,7 @@ export class HomePage extends Wrapper {
     }
   }
   /**
-   * @param {array} product
+   * @param {string} product
    */
   async addToBasket(product) {
     await this.openProduct(product)

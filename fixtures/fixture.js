@@ -17,6 +17,7 @@ export const extension = {
     page.on('pageerror', exception => {
       console.log(`Uncaught exception: "${exception}"`)
     })
+    page.on('console', m => console.log('BROWSER log: ', m.text()))
 
     // block google analytics
 

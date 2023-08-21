@@ -17,6 +17,7 @@ test.describe('Explore a practice test site that has 25 real bugs planted inside
       description: 'find first bug'
     })
     // console.log(await page.coverage)
+    // @ts-ignore
     await homePage.addToBasketAndUpdate(product[0])
   })
   test('second bug - the page becomes unresponsive when clicking on the number of results', async ({ homePage }) => {
@@ -36,6 +37,7 @@ test.describe('Explore a practice test site that has 25 real bugs planted inside
   })
   test.fixme(
     'fourth bug- the twitter share button in the product details page is broken.',
+    // @ts-ignore
     async ({ homePage, page, context }) => {
       test.info().annotations.push({
         type: 'issue',
@@ -146,6 +148,7 @@ test.describe('Explore a practice test site that has 25 real bugs planted inside
       await homePage.registerUser(user)
       await homePage.accountBillingInfoLink.click({ force: true })
     })
+    // @ts-ignore
     test('twenty one bug - the order history loads infinitely.', async ({ homePage, page }) => {
       test.info().annotations.push({
         type: 'issue',
